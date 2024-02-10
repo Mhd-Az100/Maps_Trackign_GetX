@@ -1,0 +1,24 @@
+name: watt_test
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^9.0.0
+  geolocator: ^10.1.0
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  google_maps_flutter: ^2.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
