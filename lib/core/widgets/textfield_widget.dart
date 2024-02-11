@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -6,31 +7,35 @@ import 'package:watt_test/core/constants/styles.dart';
 
 class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
-    super.key,
-    required this.controller,
-    this.maxLength,
-    this.maxLines,
-    this.hint,
-    this.onChanged,
+    Key? key,
+    required this.name,
+    this.fillColor = Colors.white,
     this.borderColor = AppColors.lightgrey,
-    this.keyboardType,
-    this.inputFormatters,
+    this.hint,
+    this.maxLength,
     this.enable,
+    this.isPassword = false,
+    this.visible = false,
+    this.maxLines,
+    this.prefix,
     this.suffixIcon,
     this.prefixIcon,
-    required this.name,
-    this.contentPadding,
-    this.onTap,
-    this.prefix,
+    this.keyboardType,
+    this.inputFormatters,
+    required this.controller,
     this.validator,
-    this.fillColor = Colors.white,
-  });
+    this.contentPadding,
+    this.onChanged,
+    this.onTap,
+  }) : super(key: key);
   final String name;
   final Color fillColor;
   final Color borderColor;
   final String? hint;
   final int? maxLength;
   final bool? enable;
+  final bool isPassword;
+  final bool visible;
   final int? maxLines;
   final Widget? prefix;
   final Widget? suffixIcon;
@@ -42,9 +47,13 @@ class TextFieldWidget extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final void Function(String?)? onChanged;
   final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
+      obscureText: visible,
+      enableSuggestions: !isPassword,
+      autocorrect: !isPassword,
       enabled: enable ?? true,
       onChanged: onChanged,
       onTap: onTap,

@@ -1,1 +1,3 @@
-enum ApiMethod { post, featch, put, delete, patch }
+enum ApiMethod { post, fetch, put, delete, patch }
+
+enum OperationState { error, success, none }

@@ -1,179 +1,119 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-import 'api_response.dart';
-
-enum Method { post, get, put, delete, patch }
+import 'package:watt_test/core/api/base_url.dart';
+import 'package:watt_test/core/api/exceptions.dart';
+import 'package:watt_test/core/constants/enums.dart';
+import 'package:watt_test/core/service_locator/service_locator.dart';
 
 class BaseApiService extends GetConnect {
-  Future<JsonResponse?> goApi({
+  final session = ServiceLocator.globalSession;
+  Future<Response<Map<String, dynamic>>?> goApi({
     required String url,
-    required Method method,
+    required ApiMethod method,
     Map<String, dynamic>? params,
     Map<String, String>? header,
-    bool? showDialog,
   }) async {
-    //
-    Response<JsonResponse>? response;
-    //
-    switch (method) {
-      //
-      case Method.get:
-        //
-        response = await get<JsonResponse>(
-          url,
-          query: params,
-          headers: header,
-        );
+    try {
+      Response<Map<String, dynamic>>? response;
 
-        break;
-      //
-      case Method.post:
-        response = await post<JsonResponse>(
-          url,
-          params,
-          headers: header,
-        );
+      switch (method) {
+        case ApiMethod.fetch:
+          response = await get<Map<String, dynamic>>(
+            url,
+            query: params,
+            headers: header,
+          );
+          break;
+        case ApiMethod.post:
+          response = await post<Map<String, dynamic>>(
+            url,
+            params,
+            headers: header,
+          );
+          break;
+        case ApiMethod.put:
+          response = await put<Map<String, dynamic>>(
+            url,
+            params,
+            headers: header,
+          );
+          break;
+        case ApiMethod.delete:
+          response = await delete(url);
+          break;
+        default:
+      }
 
-        break;
+      if (response?.status.connectionError ?? false) {
+        throw ApiNotRespondingException(response?.body?["message"] ??
+            "There is connection error, please try again later");
+      }
 
-      case Method.put:
-        response = await put<JsonResponse>(
-          url,
-          params,
-          headers: header,
-        );
+      return handleStatus(response);
+    } on SocketException {
+      throw ApiNotRespondingException("Api not responded in time");
+    } on TimeoutException {
+      throw ApiNotRespondingException("Api not responded in time");
+    }
+  }
 
-        break;
-
-      case Method.delete:
-        response = await delete(url);
-        break;
-
+  Response<Map<String, dynamic>>? handleStatus(
+    Response<Map<String, dynamic>>? response,
+  ) {
+    switch (response?.statusCode) {
+      case 200:
+      case 201:
+      case 202:
+      case 203:
+        return response;
+      case 400:
+      case 422:
+        throw InvalidInputException(
+            response?.body?["message"] ?? "Wrong in inputed data");
+      case 401:
+      case 403:
+        throw UnauthorisedException(response?.body?["message"] ??
+            "Session Expired, please login again");
+      case 500:
+        throw FetchDataException(response?.body?["message"] ??
+            "There is server error, please try again later");
       default:
+        throw FetchDataException(response?.body?["message"] ??
+            "There is server error, please try again later");
     }
-    response?.body?.code = response.statusCode;
-    //
-    if (response?.status.connectionError ?? false) {
-      return JsonResponse(
-          message: response?.body?.message ?? "No Internet !!!");
-    }
-    //
-    if (showDialog ?? false) {
-      switch (response?.statusCode) {
-        case 200:
-        case 201:
-        case 202:
-          // return response;
-          if (response?.body?.status == false) {
-            methodDialog(response?.body?.message ?? "retry again");
-            return null;
-          } else {
-            return response?.body;
-          }
-        case 400:
-          methodDialog(response?.body?.message ?? "retry again");
-          return JsonResponse(
-              message: response?.body?.message ?? 'retry again', code: 400);
-        case 401:
-        case 403:
-          methodDialog(
-              response?.body?.message?.toString() ?? 'Session Expired');
-          return JsonResponse(message: "Session Expired ", code: 401);
-        case 500:
-          methodDialog("Server Error");
-          return JsonResponse(message: "Server Error");
-
-        case 422:
-          methodDialog(response?.body?.message ?? "wrong password");
-          return JsonResponse(
-              message: response?.body?.message ?? "wrong password", code: 422);
-        default:
-          methodDialog(response?.statusText ?? "retry again");
-          return JsonResponse(message: response?.statusText ?? "retry again");
-      }
-    } else {
-      switch (response?.statusCode) {
-        case 200:
-        case 201:
-        case 202:
-          return response?.body;
-        case 401:
-          return JsonResponse(message: "Session Expired", code: 401);
-        case 400:
-          return JsonResponse(
-              message: response?.body?.message ?? 'retry again', code: 400);
-        case 500:
-          return JsonResponse(message: "Server Error");
-        case 403:
-          return JsonResponse(message: "No Internet !!");
-        case 422:
-        default:
-          return JsonResponse(message: response?.statusText ?? "retry again");
-      }
-    }
-    //
-    //
   }
 
   //
-  void methodDialog(String message) {
-    // AwesomeDialog(
-    //   context: Get.context!,
-    //   dialogType: DialogType.error,
-    //   headerAnimationLoop: false,
-    //   animType: AnimType.topSlide,
-    //   showCloseIcon: true,
-    //   titleTextStyle: style25S.copyWith(color: darkgreyColor),
-    //   buttonsTextStyle: style30S.copyWith(color: whiteColor),
-    //   title: 'خطأ في العملية',
-    //   desc: message,
-    //   descTextStyle: style18M,
-    //   onDismissCallback: (type) {},
-    //   btnOkOnPress: () {
-    //     Get.back();
-    //   },
-    //   btnOkText: "رجوع",
-    //   btnOkColor: redColor,
-    // ).show();
-  }
-
   @override
   void onInit() {
-    httpClient.defaultDecoder = JsonResponse.fromJson;
-    httpClient.baseUrl = "https://numberone.warshatec.com/api/v1/";
-    httpClient.defaultContentType = "application/json";
+    httpClient.baseUrl = BaseUrl.devServer;
+    httpClient.defaultContentType = 'application/json';
+    //
     httpClient.addResponseModifier<dynamic>(
         (dynamic request, Response<dynamic> response) async {
       inspect(response);
       return response;
     });
-
+    //
     httpClient.addRequestModifier<void>((request) async {
       request.headers.addAll({
-        'Accept': "application/json",
-        'Authorization': "Bearer ${GetStorage().read('token') ?? ''}"
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${session.getToken()}',
+        'locale': 'en',
+        'type': 'mobile',
       });
-      request.headers['locale'] = 'en';
-      request.headers['type'] = 'mobile';
 
-      //
       return request;
     });
     //
     httpClient.addAuthenticator<void>((request) async {
-      request.headers.addAll(
-          {'Authorization': "Bearer ${GetStorage().read('token') ?? ''}"});
-      request.headers['Authorization'] =
-          "Bearer ${GetStorage().read('token') ?? ''}";
-      log(GetStorage().read('token'));
+      request.headers.addAll({'Authorization': 'Bearer ${session.getToken()}'});
       return request;
     });
-    //
 
     super.onInit();
   }
-  //
 }
