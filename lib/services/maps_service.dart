@@ -49,7 +49,6 @@ class MapsService with BaseHandleApi {
       if (data['status'] == 'OK') {
         final row = data['rows'][0];
         final element = row['elements'][0];
-
         final distance = element['distance']['text'];
         final duration = element['duration']['text'];
         final durationValue = element['duration']['value'];

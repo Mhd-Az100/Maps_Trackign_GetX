@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -133,16 +134,22 @@ class MapsController extends GetxController {
 
     homeMapController
         ?.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds!, 75));
+    _carMarker = _carMarker?.copyWith(positionParam: polylineCoordinates![0]);
 
     update();
+
+    //initialize car marker
+    await _initializeCarMarker();
+    // Start the car animation
+    _animateCar();
   }
   //
 
   getDirectionPoints(LatLng? originlatLng, LatLng? destlatlng) {
     //call  setPolylinesDirection function
     setPolylinesDirection(originlatLng, destlatlng);
-//
-//?? GET MARKERS AND SET ON MAP
+    //
+    // GET MARKERS AND SET ON MAP
     setMarkers.clear();
     Marker picUpLocalMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
@@ -158,7 +165,44 @@ class MapsController extends GetxController {
 
     setMarkers.add(picUpLocalMarker);
     setMarkers.add(dropOffLocalMarker);
-
     update();
+  }
+
+  //===========================================================================
+  Marker? _carMarker;
+
+  Future<void> _initializeCarMarker() async {
+    final BitmapDescriptor carIcon = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(
+        size: Size(5, 5),
+      ),
+      'assets/png/car.png',
+    );
+
+    _carMarker = Marker(
+      markerId: const MarkerId('car'),
+      position: const LatLng(0, 0),
+      icon: carIcon,
+    );
+  }
+
+  // Car animation function
+  Future<void> _animateCar() async {
+    for (int i = 1; i < polylineCoordinates!.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 700));
+
+      // Update car marker position
+      _carMarker = _carMarker!.copyWith(positionParam: polylineCoordinates![i]);
+      setMarkers.add(_carMarker!);
+      // Update map to follow the car marker
+      _updateMap();
+      update();
+    }
+  }
+
+  // Update the map to follow the car marker
+  void _updateMap() async {
+    homeMapController
+        ?.animateCamera(CameraUpdate.newLatLng(_carMarker!.position));
   }
 }
