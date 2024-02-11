@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watt_test/core/api/api_provider.dart';
@@ -18,8 +19,13 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  // service locator setup
-  await ServiceLocator.setup();
+  await Future.wait([
+    // service locator setup
+    ServiceLocator.setup(),
+    //dotenv load the .env file
+    dotenv.load(fileName: "assets/config/.env"),
+  ]);
+
   //bottoast for toast message
   final botToastBuilder = BotToastInit();
   // opperation controller instance
@@ -84,10 +90,12 @@ class MainApp extends StatelessWidget {
           getPages: AppRoutes.routes,
           theme: ThemeData(
             primaryColor: AppColors.primaryBlue,
-            colorScheme: ColorScheme.fromSwatch(
-              backgroundColor: Colors.white,
-              accentColor: AppColors.primaryBlue,
-            ),
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(
+                    secondary: AppColors.secondary,
+                    primary: AppColors.primaryBlue)
+                .copyWith(background: Colors.white)
+                .copyWith(surfaceTint: Colors.white),
           ),
           initialBinding: BindingsBuilder(() =>
               Get.lazyPut<BaseApiService>(() => BaseApiService(), fenix: true)),

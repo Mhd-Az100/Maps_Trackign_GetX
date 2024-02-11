@@ -9,11 +9,11 @@ import 'package:watt_test/core/widgets/button_widget.dart';
 import 'package:watt_test/core/widgets/textfield_widget.dart';
 import 'package:watt_test/features/auth/controller/auht_controller.dart';
 
-class LoginView extends GetView {
+class LoginView extends GetView<AuthController> {
   LoginView({super.key});
   final formKey = GlobalKey<FormBuilderState>();
-  final usernameController = TextEditingController(text: "kminchelle");
-  final passwordController = TextEditingController(text: "0lelplR");
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
   // dependency injection for auth controller
   final authController = Get.find<AuthController>();
   @override
@@ -49,6 +49,7 @@ class LoginView extends GetView {
               "Password",
               style: AppTextStyles.bold14.copyWith(color: AppColors.darkgrey),
             ).paddingAll(8),
+            //
             GetX<AuthController>(builder: (controller) {
               return TextFieldWidget(
                 controller: passwordController,
@@ -70,6 +71,7 @@ class LoginView extends GetView {
                         color: AppColors.primaryBlue)),
               );
             }),
+            //
             SizedBox(height: 20.h),
             ButtonWidget(
               onPressed: () {
