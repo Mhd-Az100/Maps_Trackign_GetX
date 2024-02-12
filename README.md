@@ -78,13 +78,17 @@ Welcome to the **My Test App** repository!.
 5. **Validator Class**
    - Ensures data validation throughout the application.
 
-<!-- ## Demo
+## Demo
 
-Check out the gif below to see a quick demonstration of the Tracking App in action:
+Check out the video below to see the Awesome App in action:
 
-![Tracking App Demo](demo.gif) -->
+![Awesome App Demo](demo_app.mp4)
 
 Feel free to explore the codebase and discover the magic behind each feature!
+
+## Download the App
+
+Download the App APK [here](<https://drive.google.com/file/d/1WGk1Axi23xBIm-1dgT5IKCQG2qIDy6e3/view>).
 
 ## Conclusion
 
