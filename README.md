@@ -82,7 +82,7 @@ Welcome to the **My Test App** repository!.
 
 Check out the video below to see the Awesome App in action:
 
-![Awesome App Demo](demo_app.mp4)
+![Awesome App Demo](demo_app.gif)
 
 Feel free to explore the codebase and discover the magic behind each feature!
 
