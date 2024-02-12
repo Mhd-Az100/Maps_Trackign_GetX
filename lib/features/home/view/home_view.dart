@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watt_test/core/constants/colors.dart';
 import 'package:watt_test/core/constants/styles.dart';
-import 'package:watt_test/core/service_locator/service_locator.dart';
 import 'package:watt_test/core/widgets/button_widget.dart';
 import 'package:watt_test/features/google_map/view/maps_view.dart';
 import 'package:watt_test/features/home/controller/home_controller.dart';
@@ -64,8 +63,8 @@ class HomeView extends GetView<HomeController> {
                 left: 20,
                 right: 20,
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  reverseDuration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 400),
+                  reverseDuration: const Duration(milliseconds: 400),
                   transitionBuilder:
                       (Widget child, Animation<double> animation) {
                     return ScaleTransition(scale: animation, child: child);
