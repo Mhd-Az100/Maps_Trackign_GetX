@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:watt_test/core/service_locator/service_locator.dart';
+import 'package:watt_test/features/auth/model/user_model.dart';
 
 import 'session.dart';
 
 class GlobalSessionImpl implements GlobalSession {
   final secureStorage = ServiceLocator.secureStorage;
-  final storage = ServiceLocator.getStorage;
 
   @override
   Future<String?> getToken() async {
@@ -13,8 +15,10 @@ class GlobalSessionImpl implements GlobalSession {
   }
 
   @override
-  String? getUser() {
-    return storage.read("user");
+  Future<UserModel>? getUser() async {
+    String userJson = await secureStorage.read(key: "user") ?? "";
+    jsonDecode(userJson);
+    return UserModel.fromJson(jsonDecode(userJson));
   }
 
   //=================================
@@ -25,13 +29,12 @@ class GlobalSessionImpl implements GlobalSession {
   }
 
   @override
-  void setUser(String userJson) {
-    storage.write("user", userJson);
+  Future<void> setUser(String user) async {
+    await secureStorage.write(key: "user", value: user);
   }
 
   @override
   Future<void> clearSessions() async {
     await secureStorage.deleteAll();
-    await storage.erase();
   }
 }

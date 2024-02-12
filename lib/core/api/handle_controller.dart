@@ -6,14 +6,15 @@ class HandleOperationController extends GetxController {
   Rx<OperationState> operationState = OperationState.none.obs;
   RxString errorMessage = ''.obs;
   RxString successMessage = ''.obs;
-  //
+
+  // Show error message and update operation state
   void showError(String message) {
     operationState.value = OperationState.error;
     errorMessage.value = message;
     update();
   }
 
-  //
+  // Reset the controller state
   void resetState() {
     operationState.value = OperationState.none;
     errorMessage.value = '';
@@ -21,7 +22,7 @@ class HandleOperationController extends GetxController {
     update();
   }
 
-  //
+  // Show success message and update operation state
   void showSuccess(String message) {
     operationState.value = OperationState.success;
     successMessage.value = message;

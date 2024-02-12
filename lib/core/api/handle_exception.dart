@@ -8,31 +8,26 @@ import 'package:watt_test/routes/app_pages.dart';
 
 mixin BaseHandleApi {
   final handleController = Get.find<HandleOperationController>();
+
+  // Handle different types of exceptions and display appropriate messages
   handleError(exception) {
-    if (exception is FetchDataException) {
-      handleController.showError(exception.message ?? "Somthing went wrong");
-    }
-    //
-    else if (exception is InvalidInputException) {
-      handleController.showError(exception.message ?? "Somthing went wrong");
-    }
-    //
-    else if (exception is UnauthorisedException) {
+    if (exception is FetchDataException ||
+        exception is InvalidInputException ||
+        exception is ApiNotRespondingException) {
+      handleController.showError(exception.message ?? "Something went wrong");
+    } else if (exception is UnauthorisedException) {
       sessionExpiredDialog(exception);
-    }
-    //
-    else if (exception is ApiNotRespondingException) {
-      handleController.showError(exception.message ?? "Somthing went wrong");
     }
   }
 
+  // Display a session expired dialog
   sessionExpiredDialog(AppException exception) {
     showDialog(
       barrierDismissible: false,
       context: Get.context!,
       builder: (BuildContext context) {
-        return PopScope(
-          canPop: false,
+        return WillPopScope(
+          onWillPop: () async => false,
           child: AlertDialog(
             title: const Text("Warning"),
             content: Text(

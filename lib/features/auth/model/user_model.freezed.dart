@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-UserModel _$UserResponseFromJson(Map<String, dynamic> json) {
-  return _UserResponse.fromJson(json);
+UserModel _$UserModelFromJson(Map<String, dynamic> json) {
+  return _UserModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$UserResponse {
+mixin _$UserModel {
   int? get id => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
@@ -31,15 +31,14 @@ mixin _$UserResponse {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserResponseCopyWith<UserModel> get copyWith =>
+  $UserModelCopyWith<UserModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserResponseCopyWith<$Res> {
-  factory $UserResponseCopyWith(
-          UserModel value, $Res Function(UserModel) then) =
-      _$UserResponseCopyWithImpl<$Res, UserModel>;
+abstract class $UserModelCopyWith<$Res> {
+  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
+      _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
       {int? id,
@@ -53,9 +52,9 @@ abstract class $UserResponseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserResponseCopyWithImpl<$Res, $Val extends UserModel>
-    implements $UserResponseCopyWith<$Res> {
-  _$UserResponseCopyWithImpl(this._value, this._then);
+class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
+    implements $UserModelCopyWith<$Res> {
+  _$UserModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -112,11 +111,11 @@ class _$UserResponseCopyWithImpl<$Res, $Val extends UserModel>
 }
 
 /// @nodoc
-abstract class _$$UserResponseImplCopyWith<$Res>
-    implements $UserResponseCopyWith<$Res> {
-  factory _$$UserResponseImplCopyWith(
-          _$UserResponseImpl value, $Res Function(_$UserResponseImpl) then) =
-      __$$UserResponseImplCopyWithImpl<$Res>;
+abstract class _$$UserModelImplCopyWith<$Res>
+    implements $UserModelCopyWith<$Res> {
+  factory _$$UserModelImplCopyWith(
+          _$UserModelImpl value, $Res Function(_$UserModelImpl) then) =
+      __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -131,11 +130,11 @@ abstract class _$$UserResponseImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$UserResponseImplCopyWithImpl<$Res>
-    extends _$UserResponseCopyWithImpl<$Res, _$UserResponseImpl>
-    implements _$$UserResponseImplCopyWith<$Res> {
-  __$$UserResponseImplCopyWithImpl(
-      _$UserResponseImpl _value, $Res Function(_$UserResponseImpl) _then)
+class __$$UserModelImplCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$UserModelImpl>
+    implements _$$UserModelImplCopyWith<$Res> {
+  __$$UserModelImplCopyWithImpl(
+      _$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -150,7 +149,7 @@ class __$$UserResponseImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? token = freezed,
   }) {
-    return _then(_$UserResponseImpl(
+    return _then(_$UserModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -189,8 +188,8 @@ class __$$UserResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UserResponseImpl implements _UserResponse {
-  const _$UserResponseImpl(
+class _$UserModelImpl implements _UserModel {
+  const _$UserModelImpl(
       {this.id,
       this.username,
       this.email,
@@ -200,8 +199,8 @@ class _$UserResponseImpl implements _UserResponse {
       this.image,
       this.token});
 
-  factory _$UserResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserResponseImplFromJson(json);
+  factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserModelImplFromJson(json);
 
   @override
   final int? id;
@@ -222,14 +221,14 @@ class _$UserResponseImpl implements _UserResponse {
 
   @override
   String toString() {
-    return 'UserResponse(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, image: $image, token: $token)';
+    return 'UserModel(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, image: $image, token: $token)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserResponseImpl &&
+            other is _$UserModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
                 other.username == username) &&
@@ -251,19 +250,19 @@ class _$UserResponseImpl implements _UserResponse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserResponseImplCopyWith<_$UserResponseImpl> get copyWith =>
-      __$$UserResponseImplCopyWithImpl<_$UserResponseImpl>(this, _$identity);
+  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
+      __$$UserModelImplCopyWithImpl<_$UserModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserResponseImplToJson(
+    return _$$UserModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _UserResponse implements UserModel {
-  const factory _UserResponse(
+abstract class _UserModel implements UserModel {
+  const factory _UserModel(
       {final int? id,
       final String? username,
       final String? email,
@@ -271,10 +270,10 @@ abstract class _UserResponse implements UserModel {
       final String? lastName,
       final String? gender,
       final String? image,
-      final String? token}) = _$UserResponseImpl;
+      final String? token}) = _$UserModelImpl;
 
-  factory _UserResponse.fromJson(Map<String, dynamic> json) =
-      _$UserResponseImpl.fromJson;
+  factory _UserModel.fromJson(Map<String, dynamic> json) =
+      _$UserModelImpl.fromJson;
 
   @override
   int? get id;
@@ -294,6 +293,6 @@ abstract class _UserResponse implements UserModel {
   String? get token;
   @override
   @JsonKey(ignore: true)
-  _$$UserResponseImplCopyWith<_$UserResponseImpl> get copyWith =>
+  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

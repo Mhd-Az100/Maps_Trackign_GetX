@@ -7,6 +7,7 @@ import 'package:watt_test/core/constants/colors.dart';
 import 'package:watt_test/core/constants/styles.dart';
 import 'package:watt_test/core/widgets/button_widget.dart';
 import 'package:watt_test/features/google_map/controller/maps_controller.dart';
+import 'package:watt_test/features/google_map/widget/buttons_widget.dart';
 
 class GoogleMapSelect extends GetView<MapsController> {
   GoogleMapSelect({super.key});
@@ -60,67 +61,19 @@ class GoogleMapSelect extends GetView<MapsController> {
                   Positioned(
                     top: 60,
                     right: 12,
-                    child: InkWell(
-                      onTap: () {
-                        controller
-                            .moveToCurrentPosition()
-                            .then((value) => googleMapController?.animateCamera(
-                                  CameraUpdate.newCameraPosition(
-                                    CameraPosition(
-                                        target: value,
-                                        zoom: 18,
-                                        tilt: 30.440717697143555),
-                                  ),
-                                ));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.only(top: 0, left: 20),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.4),
-                              blurRadius: 7,
-                              spreadRadius: 2,
-                            ),
-                          ],
+                    child: CurrentLocationButton(callback: (v) {
+                      googleMapController?.animateCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                              target: v, zoom: 18, tilt: 30.440717697143555),
                         ),
-                        child: Icon(
-                          Icons.my_location_sharp,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
-                  Positioned(
+                  const Positioned(
                     top: 60,
                     left: 12,
-                    child: InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.only(top: 0, right: 20),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.4),
-                              blurRadius: 7,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.arrow_back_ios_outlined,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                    ),
+                    child: BackButtonWidget(),
                   ),
                   Positioned(
                     bottom: 20,

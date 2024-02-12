@@ -19,14 +19,14 @@ class SearchPlacesWidget extends StatefulWidget {
 }
 
 class _SearchPlacesWidgetState extends State<SearchPlacesWidget> {
+  final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return GooglePlaceAutoCompleteTextField(
         textEditingController: widget.controller,
-        
         boxDecoration: const BoxDecoration(),
         googleAPIKey: dotenv.env['MAP_ACCESS_KEY']!,
-        
+        focusNode: _focusNode,
         inputDecoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -47,6 +47,7 @@ class _SearchPlacesWidgetState extends State<SearchPlacesWidget> {
         isLatLngRequired: true,
         getPlaceDetailWithLatLng: (Prediction prediction) {
           widget.callBackOnSelect(prediction);
+          _focusNode.unfocus(); // Close the keyboard
         },
         itemClick: (Prediction prediction) {
           // widget.callBackOnSelect(prediction);

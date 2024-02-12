@@ -1,8 +1,10 @@
+import 'package:watt_test/features/auth/model/user_model.dart';
+
 abstract class GlobalSession {
   Future<String?> getToken();
-  String? getUser();
+  Future<UserModel>? getUser();
   Future<void> clearSessions();
   //========================
   Future<void> setToken(String token);
-  void setUser(String userJson);
+  Future<void> setUser(String user);
 }

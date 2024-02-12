@@ -10,6 +10,8 @@ import 'package:watt_test/core/service_locator/service_locator.dart';
 
 class BaseApiService extends GetConnect {
   final session = ServiceLocator.globalSession;
+
+  /// Make API requests based on the specified parameters.
   Future<Response<Map<String, dynamic>>?> goApi({
     required String url,
     required ApiMethod method,
@@ -47,19 +49,23 @@ class BaseApiService extends GetConnect {
         default:
       }
 
+      // Check for connection errors
       if (response?.status.connectionError ?? false) {
         throw ApiNotRespondingException(response?.body?["message"] ??
-            "There is connection error, please try again later");
+            "There is a connection error, please try again later");
       }
 
       return handleStatus(response);
     } on SocketException {
-      throw ApiNotRespondingException("Api not responded in time");
+      // Handle socket exceptions
+      throw ApiNotRespondingException("Api did not respond in time");
     } on TimeoutException {
-      throw ApiNotRespondingException("Api not responded in time");
+      // Handle timeout exceptions
+      throw ApiNotRespondingException("Api did not respond in time");
     }
   }
 
+  /// Handle API response status and throw appropriate exceptions.
   Response<Map<String, dynamic>>? handleStatus(
     Response<Map<String, dynamic>>? response,
   ) {
@@ -71,33 +77,37 @@ class BaseApiService extends GetConnect {
         return response;
       case 400:
       case 422:
+        // Throw exception for invalid input
         throw InvalidInputException(
-            response?.body?["message"] ?? "Wrong in inputed data");
+            response?.body?["message"] ?? "Wrong input data");
       case 401:
       case 403:
+        // Throw exception for unauthorized access
         throw UnauthorisedException(response?.body?["message"] ??
             "Session Expired, please login again");
       case 500:
+        // Throw exception for server error
         throw FetchDataException(response?.body?["message"] ??
-            "There is server error, please try again later");
+            "There is a server error, please try again later");
       default:
+        // Throw exception for unknown errors
         throw FetchDataException(response?.body?["message"] ??
-            "There is server error, please try again later");
+            "There is a server error, please try again later");
     }
   }
 
-  //
   @override
   void onInit() {
     httpClient.baseUrl = BaseUrl.devServer;
     httpClient.defaultContentType = 'application/json';
-    //
-    httpClient.addResponseModifier<dynamic>(
-        (dynamic request, Response<dynamic> response) async {
+
+    // Add a response modifier to inspect responses
+    httpClient.addResponseModifier<dynamic>((request, response) async {
       inspect(response);
       return response;
     });
-    //
+
+    // Add a request modifier to set common headers
     httpClient.addRequestModifier<void>((request) async {
       request.headers.addAll({
         'Accept': 'application/json',
@@ -108,7 +118,8 @@ class BaseApiService extends GetConnect {
 
       return request;
     });
-    //
+
+    // Add an authenticator to include authorization headers
     httpClient.addAuthenticator<void>((request) async {
       request.headers.addAll({'Authorization': 'Bearer ${session.getToken()}'});
       return request;

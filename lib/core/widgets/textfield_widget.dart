@@ -6,7 +6,7 @@ import 'package:watt_test/core/constants/colors.dart';
 import 'package:watt_test/core/constants/styles.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  const TextFieldWidget({
+  TextFieldWidget({
     Key? key,
     required this.name,
     this.fillColor = Colors.white,
@@ -47,10 +47,12 @@ class TextFieldWidget extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final void Function(String?)? onChanged;
   final void Function()? onTap;
-
+  //
+  final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
+      focusNode: _focusNode,
       obscureText: visible,
       enableSuggestions: !isPassword,
       autocorrect: !isPassword,
@@ -65,6 +67,10 @@ class TextFieldWidget extends StatelessWidget {
       controller: controller,
       name: name,
       validator: validator,
+      onEditingComplete: () {
+        // This callback is triggered when the user presses "OK" on the keyboard
+        _focusNode.unfocus(); // Close the keyboard
+      },
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

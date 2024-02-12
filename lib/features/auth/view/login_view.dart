@@ -7,7 +7,8 @@ import 'package:watt_test/core/constants/styles.dart';
 import 'package:watt_test/core/utils/validator.dart';
 import 'package:watt_test/core/widgets/button_widget.dart';
 import 'package:watt_test/core/widgets/textfield_widget.dart';
-import 'package:watt_test/features/auth/controller/auht_controller.dart';
+import 'package:watt_test/features/auth/controller/auth_controller.dart';
+import 'package:watt_test/features/auth/widget/user_credential_widget.dart';
 
 class LoginView extends GetView<AuthController> {
   LoginView({super.key});
@@ -94,26 +95,9 @@ class LoginView extends GetView<AuthController> {
                     )),
             ),
             const Spacer(),
-            Row(
-              children: [
-                Icon(Icons.info_outline, color: AppColors.red, size: 20.sp),
-                Text(
-                  "Attintion: Username and Password bellow:",
-                  style: AppTextStyles.regular14.copyWith(color: AppColors.red),
-                ).paddingAll(10.w),
-              ],
-            ),
-            Text(
-              "Username: kminchelle",
-              style:
-                  AppTextStyles.regular14.copyWith(color: AppColors.darkgrey),
-            ).paddingSymmetric(horizontal: 10.w),
-            SizedBox(height: 5.h),
-            Text(
-              "Password: 0lelplR",
-              style:
-                  AppTextStyles.regular14.copyWith(color: AppColors.darkgrey),
-            ).paddingSymmetric(horizontal: 10.w),
+            UserCredentialInfo(
+                usernameController: usernameController,
+                passwordController: passwordController),
           ],
         ).paddingSymmetric(horizontal: 20.w, vertical: 20.h),
       ),

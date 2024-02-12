@@ -67,7 +67,7 @@ class SearchPointsDirection extends GetWidget<HomeController> {
             SearchPlacesWidget(
               controller: destinationController,
               callBackOnSelect: (v) {
-                controller.savehDestination(
+                controller.saveDestination(
                     v.description ?? "",
                     LatLng(
                       double.parse(v.lat ?? "0"),
@@ -81,7 +81,7 @@ class SearchPointsDirection extends GetWidget<HomeController> {
             OpenMapButton(
               onPressed: () {
                 Get.toNamed(Routes.MAPS)?.then((value) {
-                  controller.savehDestination(value["place"], value["latlng"]);
+                  controller.saveDestination(value["place"], value["latlng"]);
                   destinationController.text = value["place"];
                 });
               },
