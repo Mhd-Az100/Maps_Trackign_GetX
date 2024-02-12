@@ -37,7 +37,7 @@ class HomeView extends GetView<HomeController> {
               ),
               Text(
                 controller.user?.value.firstName ?? "",
-                style: AppTextStyles.bold20.copyWith(color: Colors.white),
+                style: AppTextStyles.bold18.copyWith(color: Colors.white),
               ),
             ],
           );
@@ -108,7 +108,7 @@ class HomeView extends GetView<HomeController> {
                   children: [
                     Text(
                       controller.showTripCard.value ? "End Trip" : "Direction",
-                      style: AppTextStyles.bold16.copyWith(color: Colors.white),
+                      style: AppTextStyles.bold18.copyWith(color: Colors.white),
                     ),
                     const SizedBox(width: 8),
                     const Icon(

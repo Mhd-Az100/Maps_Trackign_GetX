@@ -101,7 +101,7 @@ class GoogleMapSelect extends GetView<MapsController> {
                               )
                             : Text(
                                 'Save',
-                                style: AppTextStyles.bold20
+                                style: AppTextStyles.bold18
                                     .copyWith(color: Colors.white),
                               ),
                       ),
