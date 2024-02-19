@@ -1,8 +1,8 @@
-# (Tracking App Test) for WattCharge
+# Tracking App Using (GetX, MVC, GoogleMaps)
 
 ## Introduction
 
-Welcome to the **My Test App** repository!.
+Welcome to the **Tracking App** repository!
 
 ## Features
 
